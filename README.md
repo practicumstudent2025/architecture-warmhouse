@@ -105,7 +105,7 @@
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+![Container Diagram](diagrams/protocol-adapter-class-diagram.png)
 
 # Задание 3. Разработка ER-диаграммы
 
