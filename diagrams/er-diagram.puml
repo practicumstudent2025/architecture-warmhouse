@@ -1,0 +1,180 @@
+@startuml
+title ER Diagram: Экосистема "Умный посёлок"
+
+!define ENTITY class
+!define RELATIONSHIP class
+
+' === Сущности ===
+ENTITY "Пользователи" as Users {
+  + user_id: UUID (PK)
+  --
+  email: VARCHAR(255)
+  password_hash: VARCHAR(255)
+  first_name: VARCHAR(100)
+  last_name: VARCHAR(100)
+  phone: VARCHAR(20)
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+  is_active: BOOLEAN
+  role: ENUM('user', 'admin', 'support')
+}
+
+ENTITY "Дома" as Houses {
+  + house_id: UUID (PK)
+  --
+  user_id: UUID (FK)
+  address: VARCHAR(500)
+  house_type: ENUM('apartment', 'house', 'cottage')
+  square_meters: INTEGER
+  rooms_count: INTEGER
+  created_at: TIMESTAMP
+  is_active: BOOLEAN
+}
+
+ENTITY "Устройства" as Devices {
+  + device_id: UUID (PK)
+  --
+  house_id: UUID (FK)
+  device_type_id: UUID (FK)
+  name: VARCHAR(255)
+  model: VARCHAR(255)
+  manufacturer: VARCHAR(255)
+  protocol: ENUM('MQTT', 'CoAP', 'HTTP', 'Matter')
+  ip_address: VARCHAR(45)
+  mac_address: VARCHAR(17)
+  firmware_version: VARCHAR(50)
+  registration_date: TIMESTAMP
+  last_seen: TIMESTAMP
+  status: ENUM('online', 'offline', 'error', 'maintenance')
+  is_active: BOOLEAN
+}
+
+ENTITY "Типы устройств" as DeviceTypes {
+  + device_type_id: UUID (PK)
+  --
+  name: VARCHAR(255)
+  category: ENUM('heating', 'lighting', 'security', 'access', 'sensor')
+  description: TEXT
+  supported_protocols: JSON
+  capabilities: JSON
+  created_at: TIMESTAMP
+}
+
+ENTITY "Конфигурации устройств" as DeviceConfigs {
+  + config_id: UUID (PK)
+  --
+  device_id: UUID (FK)
+  config_key: VARCHAR(255)
+  config_value: TEXT
+  config_type: ENUM('string', 'integer', 'boolean', 'json')
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+ENTITY "События устройств" as DeviceEvents {
+  + event_id: UUID (PK)
+  --
+  device_id: UUID (FK)
+  event_type: VARCHAR(100)
+  event_data: JSON
+  severity: ENUM('info', 'warning', 'error', 'critical')
+  timestamp: TIMESTAMP
+  processed: BOOLEAN
+}
+
+ENTITY "Телеметрия" as Telemetry {
+  + telemetry_id: UUID (PK)
+  --
+  device_id: UUID (FK)
+  metric_name: VARCHAR(255)
+  metric_value: DECIMAL(10,4)
+  unit: VARCHAR(50)
+  timestamp: TIMESTAMP
+  quality: ENUM('good', 'uncertain', 'bad')
+}
+
+ENTITY "Сценарии" as Scenarios {
+  + scenario_id: UUID (PK)
+  --
+  user_id: UUID (FK)
+  name: VARCHAR(255)
+  description: TEXT
+  trigger_type: ENUM('time', 'event', 'manual', 'condition')
+  trigger_config: JSON
+  is_active: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+ENTITY "Правила сценариев" as ScenarioRules {
+  + rule_id: UUID (PK)
+  --
+  scenario_id: UUID (FK)
+  device_id: UUID (FK)
+  action_type: VARCHAR(100)
+  action_parameters: JSON
+  execution_order: INTEGER
+  condition: TEXT
+}
+
+ENTITY "Уведомления" as Notifications {
+  + notification_id: UUID (PK)
+  --
+  user_id: UUID (FK)
+  title: VARCHAR(255)
+  message: TEXT
+  notification_type: ENUM('email', 'sms', 'push', 'in_app')
+  status: ENUM('pending', 'sent', 'failed', 'read')
+  created_at: TIMESTAMP
+  sent_at: TIMESTAMP
+}
+
+ENTITY "Поселения" as Settlements {
+  + settlement_id: UUID (PK)
+  --
+  name: VARCHAR(255)
+  region: VARCHAR(255)
+  address: TEXT
+  contact_person: VARCHAR(255)
+  contact_phone: VARCHAR(20)
+  contact_email: VARCHAR(255)
+  created_at: TIMESTAMP
+  is_active: BOOLEAN
+}
+
+ENTITY "Дома в поселениях" as SettlementHouses {
+  + settlement_house_id: UUID (PK)
+  --
+  settlement_id: UUID (FK)
+  house_id: UUID (FK)
+  assigned_at: TIMESTAMP
+}
+
+' === Связи ===
+Users ||--o{ Houses : "владеет"
+Users ||--o{ Scenarios : "создает"
+Users ||--o{ Notifications : "получает"
+
+Houses ||--o{ Devices : "содержит"
+Houses }o--|| SettlementHouses : "принадлежит"
+
+Devices }o--|| DeviceTypes : "имеет тип"
+Devices ||--o{ DeviceConfigs : "имеет конфигурацию"
+Devices ||--o{ DeviceEvents : "генерирует события"
+Devices ||--o{ Telemetry : "отправляет телеметрию"
+
+Scenarios ||--o{ ScenarioRules : "содержит правила"
+ScenarioRules }o--|| Devices : "управляет"
+
+Settlements ||--o{ SettlementHouses : "включает"
+
+' === Индексы ===
+note right of Users : "Индексы:\n- email (UNIQUE)\n- phone\n- role"
+
+note right of Devices : "Индексы:\n- house_id\n- device_type_id\n- status\n- last_seen"
+
+note right of Telemetry : "Индексы:\n- device_id\n- timestamp\n- metric_name"
+
+note right of DeviceEvents : "Индексы:\n- device_id\n- timestamp\n- event_type"
+
+@enduml 

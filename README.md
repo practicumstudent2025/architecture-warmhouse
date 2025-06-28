@@ -101,15 +101,15 @@
 
 **Диаграмма компонентов (Components)**
 
-![Container Diagram](diagrams/component-diagram-device-service.png)
+![Component Diagram](diagrams/component-diagram-device-service.png)
 
 **Диаграмма кода (Code)**
 
-![Container Diagram](diagrams/protocol-adapter-class-diagram.png)
+![Code Diagram](diagrams/protocol-adapter-class-diagram.png)
 
 # Задание 3. Разработка ER-диаграммы
 
-Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.
+![ER Diagram](diagrams/er-diagram.png)
 
 # Задание 4. Создание и документирование API
 
