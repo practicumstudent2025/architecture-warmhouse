@@ -89,11 +89,7 @@
 
 **Контекстная диаграмма текущей монолитной системы "Тёплый дом":**
 
-![Контекстная диаграмма системы](https://plantuml.com/ru/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000)
-
-*Диаграмма показывает взаимодействие между пользователями, монолитным приложением, базой данных и умными устройствами в текущей архитектуре.*
-
-**Альтернативная ссылка на диаграмму:** [Открыть в PlantUML редакторе](https://plantuml.com/ru/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000)
+![Контекстная диаграмма системы](diagrams/context-diagram-simple.png)
 
 **Исходный код диаграммы:** [diagrams/context-diagram-simple.puml](diagrams/context-diagram-simple.puml)
 
