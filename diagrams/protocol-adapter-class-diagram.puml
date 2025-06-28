@@ -1,0 +1,95 @@
+@startuml
+title Protocol Adapter: Диаграмма классов
+
+class ProtocolAdapter {
+  - handlers: Map<ProtocolType, ProtocolHandler>
+  - commandQueue: PriorityQueue<CommandTask>
+  + processCommand(cmd: DeviceCommand): CommandResult
+  + registerHandler(handler: ProtocolHandler): void
+  + startListener(): void
+}
+
+interface ProtocolHandler {
+  + {abstract} getSupportedProtocol(): ProtocolType
+  + {abstract} sendCommand(cmd: DeviceCommand): CommandResult
+  + {abstract} handleIncomingMessage(data: byte[]): DeviceEvent
+}
+
+class MqttHandler {
+  - client: MqttAsyncClient
+  - qos: int
+  + getSupportedProtocol(): ProtocolType
+  + sendCommand(cmd: DeviceCommand): CommandResult
+  + handleIncomingMessage(data: byte[]): DeviceEvent
+}
+
+class CoapHandler {
+  - endpoint: CoapEndpoint
+  - timeout: Duration
+  + getSupportedProtocol(): ProtocolType
+  + sendCommand(cmd: DeviceCommand): CommandResult
+  + handleIncomingMessage(data: byte[]): DeviceEvent
+}
+
+class HttpHandler {
+  - httpClient: HttpClient
+  - baseTimeout: Duration
+  + getSupportedProtocol(): ProtocolType
+  + sendCommand(cmd: DeviceCommand): CommandResult
+  + handleIncomingMessage(data: byte[]): DeviceEvent
+}
+
+class DeviceCommand {
+  - deviceId: UUID
+  - commandType: CommandType
+  - parameters: Map<String, Object>
+  - priority: int
+  + getDeviceId(): UUID
+  + getCommandType(): CommandType
+  + getParameters(): Map<String, Object>
+}
+
+class CommandResult {
+  - status: ResultStatus
+  - response: Optional<Object>
+  - error: Optional<String>
+  + isSuccess(): boolean
+  + getResponse(): Optional<Object>
+}
+
+class DeviceEvent {
+  - deviceId: UUID
+  - eventType: EventType
+  - timestamp: Instant
+  - payload: Object
+  + getDeviceId(): UUID
+  + getEventType(): EventType
+}
+
+enum ProtocolType {
+  MQTT
+  COAP
+  HTTP
+  MATTER
+}
+
+enum CommandType {
+  POWER_TOGGLE
+  SET_TEMPERATURE
+  LOCK_DOOR
+  GET_STATUS
+}
+
+ProtocolAdapter o--> ProtocolHandler
+ProtocolAdapter --> DeviceCommand
+ProtocolAdapter --> CommandResult
+ProtocolHandler <|-- MqttHandler
+ProtocolHandler <|-- CoapHandler
+ProtocolHandler <|-- HttpHandler
+MqttHandler --> DeviceCommand
+CoapHandler --> DeviceCommand
+HttpHandler --> DeviceCommand
+DeviceEvent --> ProtocolType
+DeviceCommand --> CommandType
+
+@enduml 

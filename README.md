@@ -99,17 +99,9 @@
 
 ![Container Diagram](diagrams/container-diagram.png)
 
-**Контекстная диаграмма целевой экосистемы "Умный посёлок":**
-
-![Целевая архитектура системы](diagrams/context-diagram-to-be-simple.png)
-
-*Диаграмма показывает целевую микросервисную архитектуру с разделением на домены, асинхронным взаимодействием и возможностью самообслуживания.*
-
-**Исходный код диаграммы:** [diagrams/context-diagram-to-be-simple.puml](diagrams/context-diagram-to-be-simple.puml)
-
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+![Container Diagram](diagrams/component-diagram-device-service.png)
 
 **Диаграмма кода (Code)**
 
