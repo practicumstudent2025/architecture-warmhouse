@@ -163,6 +163,24 @@ json
 }
 ```
 
+[Документация Telemetry Service: AsyncAPI](apps/smart_home/api/telemetry-asyncapi.yaml)
+
+**Пример вызова**
+
+Публикация телеметрии (PUB, асинхронно):
+
+```
+json
+{
+  "deviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "timestamp": "2023-10-05T14:30:00Z",
+  "metrics": [
+    {"name": "temperature", "value": 22.5},
+    {"name": "power", "value": 45.6}
+  ]
+}
+```
+
 # Задание 5. Работа с docker и docker-compose
 
 Перейдите в apps.
