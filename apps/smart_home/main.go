@@ -14,6 +14,8 @@ import (
 	"smarthome/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -49,10 +51,22 @@ func main() {
 	sensorHandler := handlers.NewSensorHandler(database, temperatureService)
 	sensorHandler.RegisterRoutes(apiRoutes)
 
+	// Настройка маршрутизатора
+	r := chi.NewRouter()
+
+	// Middleware
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.Timeout(60 * time.Second))
+
+	// Регистрация маршрутов
+	deviceHandler := handlers.NewDeviceHandler(services.NewDeviceService(nil, nil))
+	deviceHandler.RegisterRoutes(r)
+
 	// Start server
 	srv := &http.Server{
 		Addr:    getEnv("PORT", ":8080"),
-		Handler: router,
+		Handler: r,
 	}
 
 	// Start the server in a goroutine
@@ -70,7 +84,7 @@ func main() {
 	log.Println("Shutting down server...")
 
 	// Create a deadline for server shutdown
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("Server forced to shutdown: %v\n", err)
