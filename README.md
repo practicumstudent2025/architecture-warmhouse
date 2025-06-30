@@ -236,13 +236,3 @@ Locations - название комнаты, sensorId - идентификато
 
 Ревьюер будет проверять точно так же.
 
-**Ссылка на PlantUML диаграмму:**
-```
-https://plantuml.com/ru/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000
-```
-
-## 3. Локальная генерация (если у вас установлен PlantUML)
-
-Если у вас установлен PlantUML локально:
-
-
