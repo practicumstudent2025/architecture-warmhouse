@@ -19,4 +19,4 @@ func (s *TelemetryService) HandleTelemetry(ctx context.Context, telemetry *model
 	log.Printf("Received telemetry: deviceId=%s timestamp=%s metrics=%+v", telemetry.DeviceID, telemetry.Timestamp, telemetry.Metrics)
 	// Здесь может быть сохранение в БД, публикация в очередь и т.д.
 	return nil
-} 
+}

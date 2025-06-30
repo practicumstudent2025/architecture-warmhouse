@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"smarthome/db"
-	"smarthome/handlers"
-	"smarthome/services"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/db"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/handlers"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-chi/chi/v5"

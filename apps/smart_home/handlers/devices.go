@@ -97,4 +97,4 @@ func (h *DeviceHandler) SendCommand(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusAccepted, resp)
-} 
+}

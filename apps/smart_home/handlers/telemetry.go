@@ -30,4 +30,4 @@ func (h *TelemetryHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusAccepted)
-} 
+}

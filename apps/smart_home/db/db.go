@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"smarthome/models"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/models"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

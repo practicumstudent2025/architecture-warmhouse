@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	ErrDeviceNotFound     = errors.New("device not found")
-	ErrInvalidParameters  = errors.New("invalid parameters")
+	ErrDeviceNotFound    = errors.New("device not found")
+	ErrInvalidParameters = errors.New("invalid parameters")
 	ErrDuplicateDevice   = errors.New("device with this serial number already exists")
 )
 
@@ -109,4 +109,4 @@ func (s *DeviceService) SendCommand(ctx context.Context, deviceID uuid.UUID, req
 		CommandID: command.ID,
 		Status:    command.Status,
 	}, nil
-} 
+}

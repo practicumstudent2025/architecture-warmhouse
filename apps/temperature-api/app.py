@@ -30,5 +30,15 @@ def get_temperature():
         'temperature': temperature
     })
 
+@app.route('/temperature/<sensor_id>')
+def get_temperature_by_id(sensor_id):
+    location = SENSOR_LOCATIONS.get(sensor_id, 'Unknown')
+    temperature = round(random.uniform(15.0, 30.0), 2)
+    return jsonify({
+        'sensorId': sensor_id,
+        'location': location,
+        'temperature': temperature
+    })
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8081) 
