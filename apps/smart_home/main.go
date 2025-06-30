@@ -63,6 +63,10 @@ func main() {
 	deviceHandler := handlers.NewDeviceHandler(services.NewDeviceService(nil, nil))
 	deviceHandler.RegisterRoutes(r)
 
+	telemetryService := services.NewTelemetryService()
+	telemetryHandler := handlers.NewTelemetryHandler(telemetryService)
+	r.Post("/telemetry", telemetryHandler.Handle)
+
 	// Start server
 	srv := &http.Server{
 		Addr:    getEnv("PORT", ":8080"),
