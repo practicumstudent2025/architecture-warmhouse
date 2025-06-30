@@ -1,0 +1,63 @@
+@startuml
+!include <C4/C4_Component>
+
+title Component Diagram: Микросервис "Управление устройствами"
+
+' === Контейнер ===
+Container(device_service, "Сервис устройств", "Go", "Регистрация и управление устройствами")
+
+' === Компоненты ===
+Component(device_api, "Device API", "gRPC/REST", "Внешний интерфейс сервиса\nАутентификация запросов\nВалидация входных данных")
+Component(command_processor, "Command Processor", "Go", "Обработка команд\nМаршрутизация к адаптерам\nОчередь команд")
+Component(state_manager, "State Manager", "Go", "Управление состоянием\nКеширование в Redis\nСинхронизация с БД")
+Component(protocol_adapter, "Protocol Adapter", "Go", "Трансляция протоколов\nПоддержка MQTT/CoAP/HTTP\nОбработка таймаутов")
+Component(device_registry, "Device Registry", "Go", "Регистрация устройств\nВерификация\nМетаданные устройств")
+Component(event_dispatcher, "Event Dispatcher", "Go", "Публикация событий\nОбработка подписок\nФильтрация событий")
+
+' === Базы данных ===
+ContainerDb(device_db, "Device DB", "Cassandra", "Исторические данные\nСостояния устройств\nМетаинформация")
+ContainerDb(config_cache, "Config Cache", "Redis", "Текущие конфигурации\nСессии устройств\nКеш состояний")
+
+' === Внешние зависимости ===
+System_Ext(api_gateway, "API Gateway", "Входящие запросы")
+System_Ext(kafka, "Kafka", "Шина событий")
+System_Ext(partner_devices, "Устройства партнёров", "Физические устройства")
+
+' === Взаимодействия ===
+' Входящие запросы
+Rel(api_gateway, device_api, "Команды управления\n(вкл/выкл, настройки)", "gRPC")
+
+' Внутренняя обработка
+Rel(device_api, command_processor, "Валидированные команды", "gRPC")
+Rel(command_processor, protocol_adapter, "Трансформированные команды", "Channel")
+Rel(protocol_adapter, partner_devices, "Протокольные команды", "MQTT/CoAP")
+
+' Работа с состоянием
+Rel(device_api, state_manager, "Запросы состояния", "gRPC")
+Rel(state_manager, config_cache, "Чтение/запись состояний", "RESP")
+Rel(state_manager, device_db, "Синхронизация данных", "CQL")
+
+' Регистрация устройств
+Rel(protocol_adapter, device_registry, "Запросы регистрации", "gRPC")
+Rel(device_registry, device_db, "Сохранение метаданных", "CQL")
+
+' События
+Rel(protocol_adapter, event_dispatcher, "События устройств", "Channel")
+Rel(event_dispatcher, kafka, "Публикация событий", "Kafka Protocol")
+
+' Обратная связь
+Rel(protocol_adapter, command_processor, "Результаты выполнения", "Channel")
+Rel(command_processor, device_api, "Статус операций", "gRPC")
+
+' === Легенда ===
+legend right
+  | Компонент | Ответственность |
+  | **Device API** | Интерфейс взаимодействия |
+  | **Command Processor** | Оркестрация команд |
+  | **Protocol Adapter** | Поддержка протоколов |
+  | **State Manager** | Управление состоянием |
+  | **Device Registry** | Регистрация устройств |
+  | **Event Dispatcher** | Распространение событий |
+endlegend
+
+@enduml 

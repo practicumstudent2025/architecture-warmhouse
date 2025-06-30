@@ -1,4 +1,37 @@
-# Smart Home Sensor Management API
+# Smart Home Monolith & Temperature API
+
+## Temperature API
+
+Сервис для генерации случайной температуры по комнате или sensorId.
+
+### Запуск
+
+```bash
+cd apps
+# Собрать и запустить все сервисы
+docker-compose up --build
+```
+
+### Эндпоинт
+
+`GET /temperature?location=Living%20Room` или `GET /temperature?sensorId=1`
+
+Ответ:
+```json
+{
+  "sensorId": "1",
+  "location": "Living Room",
+  "temperature": 23.45
+}
+```
+
+- Если не указан location, он определяется по sensorId (1 — Living Room, 2 — Bedroom, 3 — Kitchen)
+- Если не указан sensorId, он определяется по location
+- Температура всегда случайная
+
+## Smart Home Monolith
+
+(см. инструкции ниже для работы с датчиками и БД)
 
 ## Prerequisites
 

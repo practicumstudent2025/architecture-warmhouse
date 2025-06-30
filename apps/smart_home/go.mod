@@ -1,9 +1,11 @@
-module smarthome
+module github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home
 
 go 1.22
 
 require (
 	github.com/gin-gonic/gin v1.8.2
+	github.com/go-chi/chi/v5 v5.0.10
+	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v5 v5.3.1
 )
 

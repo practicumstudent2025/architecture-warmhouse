@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"smarthome/db"
-	"smarthome/models"
-	"smarthome/services"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/db"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/models"
+	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/services"
 
 	"github.com/gin-gonic/gin"
 )

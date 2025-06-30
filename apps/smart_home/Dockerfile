@@ -7,6 +7,11 @@ WORKDIR /app
 # Copy go.mod and go.sum files
 COPY go.mod go.sum ./
 
+# Add required dependencies explicitly
+RUN go get github.com/go-chi/chi/v5 && \
+    go get github.com/go-chi/chi/v5/middleware && \
+    go get github.com/google/uuid
+
 # Download dependencies
 RUN go mod download
 

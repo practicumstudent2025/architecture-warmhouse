@@ -1,0 +1,43 @@
+asyncapi: 2.4.0
+info:
+  title: Telemetry Streaming API
+  version: 1.0.0
+
+channels:
+  device.telemetry:
+    publish:
+      summary: Публикация телеметрии устройства
+      message:
+        name: DeviceTelemetry
+        title: Device Telemetry Message
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            deviceId:
+              type: string
+              format: uuid
+              example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            timestamp:
+              type: string
+              format: date-time
+              example: "2023-10-05T14:30:00Z"
+            metrics:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "temperature"
+                  value:
+                    type: number
+                    example: 22.5
+          example:
+            deviceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            timestamp: "2023-10-05T14:30:00Z"
+            metrics:
+              - name: "temperature"
+                value: 22.5
+              - name: "humidity"
+                value: 45 
