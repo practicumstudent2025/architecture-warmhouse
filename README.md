@@ -134,7 +134,7 @@
 
 ### 2. Документация API
 
-![Документация Device Management API](apps/smart_home/api/device-management-api.yaml)
+[Документация Device Management API](apps/smart_home/api/device-management-api.yaml)
 
 **Пример вызова**
 
