@@ -134,7 +134,30 @@
 
 ### 2. Документация API
 
-Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
+![Документация Device Management API](apps/smart_home/api/device-management-api.yaml)
+
+**Пример вызова**
+
+Регистрация нового устройства:
+
+http
+POST /devices
+Content-Type: application/json
+
+{
+  "serialNumber": "SN-TH-001",
+  "typeId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "houseId": "550e8400-e29b-41d4-a716-446655440000"
+}
+
+Ответ:
+
+json
+{
+  "deviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "status": "ACTIVE",
+  "firmwareVersion": "1.2.3"
+}
 
 # Задание 5. Работа с docker и docker-compose
 
