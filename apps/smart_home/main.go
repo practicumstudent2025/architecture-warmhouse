@@ -14,8 +14,6 @@ import (
 	"github.com/practicumstudent2025/architecture-warmhouse/apps/smart_home/services"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -51,26 +49,10 @@ func main() {
 	sensorHandler := handlers.NewSensorHandler(database, temperatureService)
 	sensorHandler.RegisterRoutes(apiRoutes)
 
-	// Настройка маршрутизатора
-	r := chi.NewRouter()
-
-	// Middleware
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.Timeout(60 * time.Second))
-
-	// Регистрация маршрутов
-	deviceHandler := handlers.NewDeviceHandler(services.NewDeviceService(nil, nil))
-	deviceHandler.RegisterRoutes(r)
-
-	telemetryService := services.NewTelemetryService()
-	telemetryHandler := handlers.NewTelemetryHandler(telemetryService)
-	r.Post("/telemetry", telemetryHandler.Handle)
-
 	// Start server
 	srv := &http.Server{
 		Addr:    getEnv("PORT", ":8080"),
-		Handler: r,
+		Handler: router,
 	}
 
 	// Start the server in a goroutine
